@@ -1,10 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no, email=no">
+    <meta name="HandheldFriendly" content="true">
+    <title>登陆</title>
+    <link rel="stylesheet" href="/assets/css/frozenui.css">
+    <link rel="stylesheet" href="/app_assets/css/style.css">
 </head>
-<body>
-
+<body ontouchstart data-module="login">
+<section class="ui-container">
+    <section id="list">
+        <h1 class="title">登陆</h1>
+        <div class="demo-item">
+            <p class="demo-desc">请输入用户信息</p>
+            <div class="demo-block">
+                <div class="ui-form ui-border-t">
+                    <form action="#">
+                        <div class="ui-form-item ui-border-b">
+                            <label>用户名：</label>
+                            <input type="text" name="name" id="name" placeholder="用户名"/>
+                        </div>
+                        <div class="ui-form-item ui-border-b">
+                            <label>密&nbsp;&nbsp;&nbsp;码：</label>
+                            <input type="password" name="pass" id="pass" placeholder="密   码"/>
+                        </div>
+                        <div class="ui-btn-wrap">
+                            <button onclick="login();return false;" class="ui-btn-lg ui-btn-primary">
+                                确定
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+<script src="/app_assets/js/config.js"></script>
+<script src="/assets/js/zepto.min.js"></script>
+<script src="/app_assets/js/common.js"></script>
+<script>
+    function login() {
+        var name = $("#name").val()
+        var pass = $("#pass").val()
+        $.ajax({
+            type: 'POST',
+            url: Global.apiUrl+"Login",
+            // data to be added to query string:
+            data: {name: name, pass: pass},
+            // type of data we are expecting in return:
+            dataType: 'json',
+            timeout: 300,
+            xhrFields: {
+                withCredentials: true
+            },
+            //context: $('body'),
+            success: function(response){
+                if(response.iRet == "0") {
+                    location.href= '/index.html';
+                } else {
+                    alert(response.sMsg)
+                }
+                console.log(response)
+            },
+            error: function(xhr, type){
+                alert('Ajax error!')
+            }
+        })
+    }
+</script>
 </body>
 </html>

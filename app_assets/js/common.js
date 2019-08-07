@@ -1,4 +1,7 @@
 var Global = Global || {};
+Global.pageFunc = function(){
+    // 在每个页面里面复写登陆后执行
+}
 Global.apiUrl = "http://mmapi.pooky.cc/";
 document.domain = "pooky.cc";
 (function (doc, win) {
@@ -21,9 +24,6 @@ document.domain = "pooky.cc";
         $.ajax({
             type: 'GET',
             url: Global.apiUrl + "IsLogin",
-            // data to be added to query string:
-            //data: { name: 'Zepto.js' },
-            // type of data we are expecting in return:
             dataType: 'json',
             timeout: 300,
             xhrFields: {
@@ -32,6 +32,8 @@ document.domain = "pooky.cc";
             success: function (response) {
                 if (response.data != "1") {
                     location.href = '/module/login/login.html';
+                } else {
+                    Global.pageFunc();//执行每个页面的具体函数
                 }
                 console.log(response)
             },

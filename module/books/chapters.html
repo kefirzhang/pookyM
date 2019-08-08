@@ -41,7 +41,7 @@
 <script src="/assets/js/zepto.min.js"></script>
 <script src="/app_assets/js/common.js"></script>
 <script>
-    Global.pageFunc = function () {
+    Global.pageFunc = function (times) {
         var b_id = parseInt(getUrlVal("b_id"))
         if (!b_id) {
             return
@@ -68,7 +68,11 @@
                 $('#area_ul').html(li_html)
             },
             error: function (xhr, type) {
-                alert('Ajax error!')
+                if (times <= 2) {
+                    Global.pageFunc(times + 1)
+                } else {
+                    alert('Chapters Ajax error!')
+                }
             }
         })
     }

@@ -28,11 +28,11 @@ $(function(){
                     if (response.data != "1") {
                         location.href = '/module/login/login.html';
                     } else {
-                        Global.pageFunc();//执行每个页面的具体函数
+                        Global.pageFunc(1);//执行每个页面的具体函数
                     }
                 },
                 error: function (xhr, type) {
-                    alert('Ajax error!')
+                    alert('Login jax error!')
                 }
             })
         }

@@ -41,7 +41,7 @@
 <script src="/assets/js/zepto.min.js"></script>
 <script src="/app_assets/js/common.js"></script>
 <script>
-    Global.pageFunc = function () {
+    Global.pageFunc = function (times) {
         $.ajax({
             type: 'GET',
             url: Global.apiUrl + "GetBooks",
@@ -62,7 +62,7 @@
                     li_html += '<h4 class="ui-nowrap"><a href="/module/books/chapters.html?b_id=' + record.id + '">' + record.name + '</a></h4>';
                     li_html += '<p>' + record.last_chapter + '</p>';
                     li_html += '<p></p>';
-                    if(record.finished == '1'){
+                    if (record.finished == '1') {
                         li_html += '<p>已完结</p>';
                     } else {
                         li_html += '<p>更新中</p>';
@@ -73,7 +73,11 @@
                 $('#area_ul').html(li_html)
             },
             error: function (xhr, type) {
-                alert('Ajax error!')
+                if (times <= 2) {
+                    Global.pageFunc(times + 1)
+                } else {
+                    alert('Books Ajax error!')
+                }
             }
         })
     }

@@ -47,7 +47,7 @@
 <script src="/assets/js/zepto.min.js"></script>
 <script src="/app_assets/js/common.js"></script>
 <script>
-    Global.pageFunc = function () {
+    Global.pageFunc = function (times) {
         //http://mmapi.pooky.cc/GetChapterContent/1/4
         var b_id = parseInt(getUrlVal("b_id"))
         var chapter_id = parseInt(getUrlVal("chapter_id"))
@@ -77,7 +77,11 @@
                 $("#page_area").html(page_html)
             },
             error: function (xhr, type) {
-                alert('Ajax error!')
+                if (times <= 2) {
+                    Global.pageFunc(times + 1)
+                } else {
+                    alert('Chapters Ajax error!')
+                }
             }
         })
     }

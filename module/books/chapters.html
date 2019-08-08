@@ -2,12 +2,16 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no, email=no">
     <meta name="HandheldFriendly" content="true">
     <title>Books-书库</title>
     <link rel="stylesheet" href="/assets/css/frozenui.css">
     <link rel="stylesheet" href="/app_assets/css/style.css">
+    <style>
+        #area_ul a {color:black}
+    </style>
 </head>
 <body ontouchstart>
 <section class="ui-container">
@@ -18,34 +22,18 @@
         <div class="demo-item">
             <p class="demo-desc">章节列表</p>
             <div class="demo-block">
-                <ul class="ui-list ui-list-single ui-list-link ui-border-tb">
+                <ul class="ui-list ui-list-single ui-list-link ui-border-tb" id="area_ul">
+                    <!--
                     <li class="ui-border-t" data-href="/module/books/content.html">
                         <div class="ui-list-info">
                             <h4 class="ui-nowrap">244.回家还是军官培训（第一更）（第一更）（第一更）（第一更）</h4>
                             <div class="ui-reddot ui-reddot-static"></div>
                         </div>
                     </li>
-                    <li class="ui-border-t" data-href="/module/books/content.html">
-                        <div class="ui-list-info">
-                            <h4 class="ui-nowrap">245.喜马拉雅上的飞碟（1）</h4>
-                            <div class="ui-reddot ui-reddot-static"></div>
-                        </div>
-                    </li>
-                    <li class="ui-border-t" data-href="/module/books/content.html">
-                        <div class="ui-list-info">
-                            <h4 class="ui-nowrap">246.喜马拉雅上的飞碟（2）</h4>
-                            <div class="ui-reddot"></div>
-                        </div>
-                    </li>
-                    <li class="ui-border-t" data-href="/module/books/content.html">
-                        <div class="ui-list-info">
-                            <h4 class="ui-nowrap">247.喜马拉雅上的飞碟（3）</h4>
-                            <div class="ui-reddot"></div>
-                        </div>
-                    </li>
+                    -->
                 </ul>
             </div>
-            <a href="/index.html" class="ui-btn ui-btn-primary" >回首页</a>
+            <a href="/index.html" class="ui-btn ui-btn-primary">回首页</a>
         </div>
     </section>
 </section>
@@ -53,8 +41,36 @@
 <script src="/assets/js/zepto.min.js"></script>
 <script src="/app_assets/js/common.js"></script>
 <script>
-    Global.pageFunc = function(){
-        alert("pageFuncChapters");
+    Global.pageFunc = function () {
+        var b_id = parseInt(getUrlVal("b_id"))
+        if (!b_id) {
+            return
+        }
+        $.ajax({
+            type: 'GET',
+            url: Global.apiUrl + "GetBookChapters/" + b_id,
+            dataType: 'json',
+            timeout: 300,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                var li_html = ''
+                for (var i in response.data) {
+                    record = response.data[i]
+                    li_html += '<li class="ui-border-t" data-href="/module/books/content.html?b_id=' + record.b_id + '&chapter_id=' + record.id + '">';
+                    li_html += '<div class="ui-list-info">';
+                    li_html += '<h4 class="ui-nowrap"><a href="/module/books/content.html?b_id=' + record.b_id + '&chapter_id=' + record.id + '">' + record.title + '</a></h4>';
+                    li_html += '<div class=""></div>';
+                    li_html += '</div>';
+                    li_html += '</li>';
+                }
+                $('#area_ul').html(li_html)
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
     }
 </script>
 </body>

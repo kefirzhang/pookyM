@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport"
+          content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no, email=no">
     <meta name="HandheldFriendly" content="true">
     <title>Books-书库</title>
@@ -17,8 +18,8 @@
         <div class="demo-item">
             <p class="demo-desc">图书列表</p>
             <div class="demo-block">
-                <ul class="ui-list  ui-border-tb ui-list-nospace">
-                    <li data-href="/module/books/chapters.html">
+                <ul class="ui-list  ui-border-tb ui-list-nospace" id="area_ul">
+                    <!--<li data-href="/module/books/chapters.html">
                         <div class="ui-list-img-horizontal">
                             <span style="background-image:url(http://placeholder.qiniudn.com/268x188)"></span>
                         </div>
@@ -29,20 +30,10 @@
                             <p>最后更新 2019-8-05 12:12:12</p>
                         </div>
                     </li>
-                    <li data-href="/module/books/chapters.html">
-                        <div class="ui-list-img-horizontal">
-                            <span style="background-image:url(http://placeholder.qiniudn.com/268x188)"></span>
-                        </div>
-                        <div class="ui-list-info">
-                            <h4 class="ui-nowrap">穹顶之上这是标题，加ui-nowrap可以超出长度截断</h4>
-                            <p>最新章节-这个骰子</p>
-                            <p>读至-青龙岙</p>
-                            <p>最后更新 2019-8-05 12:12:12</p>
-                        </div>
-                    </li>
+                    -->
                 </ul>
             </div>
-            <a href="/index.html" class="ui-btn ui-btn-primary" >回首页</a>
+            <a href="/index.html" class="ui-btn ui-btn-primary">回首页</a>
         </div>
     </section>
 </section>
@@ -50,8 +41,41 @@
 <script src="/assets/js/zepto.min.js"></script>
 <script src="/app_assets/js/common.js"></script>
 <script>
-    Global.pageFunc = function(){
-        alert("pageFuncBooks");
+    Global.pageFunc = function () {
+        $.ajax({
+            type: 'GET',
+            url: Global.apiUrl + "GetBooks",
+            dataType: 'json',
+            timeout: 300,
+            xhrFields: {
+                withCredentials: true
+            },
+            success: function (response) {
+                var li_html = ''
+                for (var i in response.data) {
+                    record = response.data[i]
+                    li_html += '<li data-href="/module/books/chapters.html?b_id=' + record.id + '">';
+                    li_html += '<div class="ui-list-img-horizontal">';
+                    li_html += '<span style="background-image:url(http://placeholder.qiniudn.com/268x188)"></span>';
+                    li_html += '</div>';
+                    li_html += '<div class="ui-list-info">';
+                    li_html += '<h4 class="ui-nowrap"><a href="/module/books/chapters.html?b_id=' + record.id + '">' + record.name + '</a></h4>';
+                    li_html += '<p>' + record.last_chapter + '</p>';
+                    li_html += '<p></p>';
+                    if(record.finished == '1'){
+                        li_html += '<p>已完结</p>';
+                    } else {
+                        li_html += '<p>更新中</p>';
+                    }
+                    li_html += '</div>';
+                    li_html += '</li>';
+                }
+                $('#area_ul').html(li_html)
+            },
+            error: function (xhr, type) {
+                alert('Ajax error!')
+            }
+        })
     }
 </script>
 </body>

@@ -1,7 +1,3 @@
-var Global = Global || {};
-Global.pageFunc = function(){
-    // 在每个页面里面复写登陆后执行
-}
 (function (doc, win) {
     $('#list td,#list li').click(function () {
         location.href = $(this).data('href');

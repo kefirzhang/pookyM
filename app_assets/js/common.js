@@ -88,3 +88,6 @@ function getUrlVal(para){
         return arrVal;
     }
 }
+function qijixs_bottom() {
+
+}
